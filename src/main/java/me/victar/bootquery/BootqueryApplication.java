@@ -1,5 +1,6 @@
 package me.victar.bootquery;
 
+import me.victar.bootquery.service.JCRUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -47,16 +48,6 @@ public class BootqueryApplication {
 
 }
 
-//@RestController
-//class ReservationRestController{
-//    @RequestMapping("/reservations")
-//    Collection<Reservation> reservations(){
-//        return reservationRepository.findAll();
-//    }
-//
-//    @Autowired
-//    private ReservationRepository reservationRepository;
-//}
 
 @RepositoryRestResource
 interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -73,6 +64,7 @@ class ReservationResourceProcesser implements ResourceProcessor<Resource<Reserva
         reservationResource.add(new Link("http://s3.com/imgs/" + reservationResource.getContent().getId() + ".jpg","profile-photo"));
         return reservationResource;
     }
+
 }
 @Controller
 class ReservationMvcController {
@@ -85,8 +77,8 @@ class ReservationMvcController {
 
     @Autowired
     private ReservationRepository reservationRepository;
-
 }
+
 
 @Entity
 class Reservation {

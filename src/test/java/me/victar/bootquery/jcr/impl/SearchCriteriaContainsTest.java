@@ -10,13 +10,13 @@ import static org.junit.Assert.*;
 public class SearchCriteriaContainsTest {
 
     @Test
-    public void test_criteria(){
+    public void testCriteria(){
         SearchCriteriaContains searchCriteriaContains = new SearchCriteriaContains("any");
         assertEquals("CONTAINS(s.*,'any')", searchCriteriaContains.getQuery());
     }
 
     @Test
-    public void test_criteria_empty(){
+    public void testCriteriaEmpty(){
         SearchCriteriaContains searchCriteriaContains = new SearchCriteriaContains("");
         assertEquals("", searchCriteriaContains.getQuery());
     }

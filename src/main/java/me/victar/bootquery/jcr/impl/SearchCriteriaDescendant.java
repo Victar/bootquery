@@ -6,11 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Created by viktor.kadol on 29.01.16.
  */
-public class SearchCriteriaDestination implements SearchCriteria{
+public class SearchCriteriaDescendant implements SearchCriteria{
 
     private String path;
 
-    public SearchCriteriaDestination(String path) {
+    public SearchCriteriaDescendant(String path) {
         this.path = path;
     }
 

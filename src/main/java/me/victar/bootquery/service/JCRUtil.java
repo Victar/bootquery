@@ -2,7 +2,9 @@ package me.victar.bootquery.service;
 
 
 import me.victar.bootquery.jcr.Search;
+import me.victar.bootquery.model.ResultWrapper;
 import org.apache.jackrabbit.commons.JcrUtils;
+import org.springframework.stereotype.Component;
 
 import javax.jcr.*;
 import javax.jcr.nodetype.PropertyDefinition;
@@ -15,9 +17,18 @@ import java.util.function.Consumer;
 /**
  * Created by viktor.kadol on 27.01.16.
  */
+@Component
 public class JCRUtil {
 
     public static String DEFAULT_WORKSPACENAME = "crx.default";
+    public static String DEFAULT_URL = "http://localhost:4502/crx/server";
+    public static String DEFAULT_USERNAME =  "admin";
+    public static String DEFAULT_PASSWORD =  "admin";
+
+
+    public Session getSession() throws RepositoryException {
+        return getSession(DEFAULT_URL, DEFAULT_USERNAME, DEFAULT_PASSWORD, DEFAULT_WORKSPACENAME);
+    }
 
     public Session getSession(String url, String username, String password) throws RepositoryException {
         return getSession(url, username, password, DEFAULT_WORKSPACENAME);
@@ -62,6 +73,25 @@ public class JCRUtil {
         Query query = queryManager.createQuery(search.getQuery(), search.getQueryType());
         QueryResult queryResult = query.execute();
         return queryResult;
+    }
+
+    public List<ResultWrapper> getResults(Session session, Search search) throws RepositoryException {
+        QueryResult queryResult = runQuery(session,search);
+        List<ResultWrapper> results = new ArrayList<ResultWrapper>();
+        NodeIterator nodeIterator = queryResult.getNodes();
+        nodeIterator.forEachRemaining(node-> results.add(fromNode((Node)node)));
+        return results;
+    }
+
+    public  ResultWrapper fromNode(Node node){
+        ResultWrapper resultWrapper  = null;
+        try {
+            resultWrapper = new ResultWrapper(node.getPath());
+        } catch (RepositoryException e) {
+
+            e.printStackTrace();
+        }
+        return resultWrapper;
     }
 
 }
